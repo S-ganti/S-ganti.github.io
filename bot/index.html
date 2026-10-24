@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bakery Bot Demo</title>
+  <meta name="description" content="Demo WhatsApp ordering bot for a fictional Bengaluru home bakery, built by Sriharsh Ganti. Real ordering logic, running in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23008069'/%3E%3Ctext x='16' y='21.5' font-family='Arial' font-weight='700' font-size='14' fill='%23ffffff' text-anchor='middle'%3EBB%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="../index.html#case-bot">&larr; Portfolio</a>
+    <p class="demo-note"><b>Demo.</b> Fictional bakery, fake UPI ID, nothing is sent anywhere. Orders stay in this browser.</p>
+    <div class="top-actions">
+      <button type="button" class="theme-toggle" aria-label="Toggle colour theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Demo views">
+    <button type="button" role="tab" id="tab-chat" aria-controls="panel-chat" aria-selected="true">Customer chat</button>
+    <button type="button" role="tab" id="tab-owner" aria-controls="panel-owner" aria-selected="false">Owner view <span class="count" id="order-count">0</span></button>
+  </div>
+
+  <main class="layout">
+    <section class="phone" id="panel-chat" role="tabpanel" aria-labelledby="tab-chat">
+      <div class="wa-head">
+        <div class="avatar" aria-hidden="true">BB</div>
+        <div class="wa-title">
+          <h1>Butterbird Home Bakery <span class="pill">DEMO</span></h1>
+          <p id="status">online · replies instantly</p>
+        </div>
+        <button type="button" class="icon-btn" id="reset-chat" title="Restart chat" aria-label="Restart chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+        </button>
+      </div>
+
+      <div class="wa-body" id="log" role="log" aria-live="polite" aria-label="Chat messages">
+        <p class="day-chip">Today</p>
+        <p class="sys-chip">This is a demo. Try ordering a cake: say hi, or type <b>menu</b>, <b>back</b>, <b>cancel</b> or <b>talk to human</b> at any point.</p>
+      </div>
+
+      <div class="chips" id="chips" aria-label="Suggested replies"></div>
+
+      <form class="wa-input" id="composer" autocomplete="off">
+        <label class="sr-only" for="msg">Message</label>
+        <input id="msg" name="msg" type="text" placeholder="Message" maxlength="300" enterkeyhint="send">
+        <button type="submit" class="send" aria-label="Send">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12.6 2-12.6 2z"/></svg>
+        </button>
+      </form>
+    </section>
+
+    <section class="owner" id="panel-owner" role="tabpanel" aria-labelledby="tab-owner">
+      <div class="owner-head">
+        <div>
+          <h2>Owner view</h2>
+          <p>What the baker would see: every order the bot takes, ready to bake. In a live setup this list lands in a Google Sheet or the owner's WhatsApp.</p>
+        </div>
+        <button type="button" class="ghost-btn" id="clear-orders">Clear demo orders</button>
+      </div>
+      <div id="handoffs" class="handoffs" hidden></div>
+      <div id="orders" class="orders">
+        <p class="empty">No orders yet. Place one in the chat and it appears here.</p>
+      </div>
+      <details class="how">
+        <summary>How this demo works</summary>
+        <p>The chat runs a real state machine (<code>bot-core.js</code>): greeting, menu, size, quantity, date and slot with a same-day cutoff, cake message, pickup or delivery with HSR, Koramangala and BTM fees, summary, a UPI advance link and an order ID. The same file is covered by automated tests and is embedded in an <a href="n8n-whatsapp-bakery.json" download>n8n workflow</a> for the WhatsApp Cloud API. That workflow has not been tested against a live WhatsApp Business account yet.</p>
+      </details>
+    </section>
+  </main>
+
+  <script src="bot-core.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>
